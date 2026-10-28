@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memo Şehri · Yenileme</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--night:#080d18;--ink:#f4f1ea;--mist:#9db0cc;--gold:#ffc857;--ice:#6ee7ff;
+--disp:'Unbounded','Trebuchet MS',sans-serif;--body:'Manrope','Segoe UI',Arial,sans-serif;
+--glass:rgba(14,22,40,.55);--line:rgba(255,255,255,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--night);color:var(--ink);font-family:var(--body);overflow:hidden}
+.stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;overflow:hidden;transform:translate(-50%,-50%) scale(var(--s,1))}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease}
+.slide.on{opacity:1}
+.img{position:absolute;inset:0;background-size:cover;background-position:center;transform:scale(1.03)}
+.slide.on .img{animation:drift 14s ease-out forwards}
+@keyframes drift{to{transform:scale(1.1) translate(-1%,-.6%)}}
+.shade{position:absolute;inset:0;pointer-events:none;background:
+ linear-gradient(180deg,rgba(8,13,24,.6),rgba(8,13,24,0) 25%,rgba(8,13,24,0) 40%,rgba(8,13,24,.94)),
+ linear-gradient(90deg,rgba(8,13,24,.6),rgba(8,13,24,0) 60%)}
+.top{position:absolute;top:21.6px;left:51.2px;right:51.2px;display:flex;justify-content:space-between;align-items:center;z-index:5}
+.pill{display:flex;align-items:center;gap:10.24px;background:var(--glass);border:1px solid var(--line);border-radius:99px;padding:7.2px 19.2px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);font-weight:800;font-size:clamp(11px,12.8px,18px)}
+.brand{font-family:var(--disp);font-weight:700;letter-spacing:.04em}
+.dot{width:.7em;height:.7em;border-radius:50%;background:var(--gold);box-shadow:0 0 0 0 rgba(255,200,87,.7);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 .9em rgba(255,200,87,0)}100%{box-shadow:0 0 0 0 rgba(255,200,87,0)}}
+.cap{position:absolute;left:51.2px;bottom:180.0px;max-width:min(691.2px,980px);z-index:5}
+.tag{display:inline-block;font-weight:800;font-size:clamp(11px,13.44px,19px);color:var(--night);background:var(--gold);padding:5.04px 15.36px;border-radius:99px;margin-bottom:17.28px}
+.cap h1{font-family:var(--disp);font-weight:700;font-size:clamp(28px,69.12px,100px);line-height:1;letter-spacing:-.035em;margin-bottom:17.28px}
+.cap p{font-size:clamp(14px,19.84px,28px);line-height:1.5;color:#cdd7e6;max-width:30em;font-weight:500}
+.cap>*{transition:opacity .6s ease,transform .6s ease}
+.cap.swap>*{opacity:0;transform:translateY(14px)}
+.nav{position:absolute;left:51.2px;right:51.2px;bottom:28.8px;z-index:6;display:flex;gap:12.8px}
+.nav button{all:unset;cursor:pointer;flex:1;padding-top:7.2px;font-weight:800;font-size:clamp(11px,12.8px,18px);color:var(--mist);transition:color .3s}
+.nav button.on{color:var(--ink)}
+.nav button span{display:block;height:4px;margin-top:7.2px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden}
+.nav button span::after{content:"";display:block;height:100%;width:0;background:var(--ink)}
+.nav button.done span::after{width:100%}
+.nav button.on span::after{animation:fill var(--dur,7s) linear forwards}
+.nav button:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
+@keyframes fill{to{width:100%}}
+
+.big{position:absolute;right:38.4px;top:72.0px;z-index:4;font-family:var(--disp);font-weight:700;font-size:clamp(90px,256.0px,380px);line-height:1;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.22);transition:opacity .6s}
+.next{position:absolute;right:51.2px;bottom:180.0px;z-index:5;display:flex;align-items:center;gap:15.36px;width:min(307.2px,420px);padding:8.64px 15.36px;background:var(--glass);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);cursor:pointer}
+.next .thumb{width:36%;aspect-ratio:16/10;border-radius:14px;background-size:cover;background-position:center;flex:none}
+.next small{display:block;color:var(--mist);font-weight:700;font-size:clamp(10px,11.52px,16px);margin-bottom:2.88px}
+.next b{font-family:var(--disp);font-weight:500;font-size:clamp(12px,15.36px,22px);line-height:1.2}
+.ticker{position:absolute;left:51.2px;right:51.2px;bottom:79.2px;z-index:5;height:clamp(30px,33.12px,52px);display:flex;align-items:center;background:var(--glass);border:1px solid var(--line);border-radius:99px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);overflow:hidden}
+.ticker em{flex:none;font-style:normal;font-weight:800;font-size:clamp(11px,12.8px,18px);color:var(--night);background:var(--gold);height:100%;display:flex;align-items:center;padding:0 20.48px}
+.ticker div{overflow:hidden;flex:1;white-space:nowrap}
+.ticker span{display:inline-block;padding-left:100%;font-weight:700;font-size:clamp(12px,14.08px,20px);animation:roll 40s linear infinite}
+.ticker span b{color:var(--gold);margin:0 17.92px}
+@keyframes roll{to{transform:translateX(-100%)}}
+.clock{font-variant-numeric:tabular-nums;color:var(--mist)}
+
+body.ad .cap,body.ad .big,body.ad .shade{opacity:0;pointer-events:none}
+.adslide{background:#070b16;overflow:hidden}
+.adslide::before,.adslide::after{content:"";position:absolute;width:768.0px;height:768.0px;border-radius:50%;filter:blur(90px);opacity:.55;animation:blob 16s ease-in-out infinite alternate}
+.adslide::before{background:#6a5cff;left:-192.0px;top:-256.0px}
+.adslide::after{background:#00d4ff;right:-256.0px;bottom:-320.0px;animation-delay:-8s;opacity:.4}
+@keyframes blob{to{transform:translate(102.4px,43.2px) scale(1.15)}}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:76.8px 76.8px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%)}
+.adwrap{position:absolute;inset:100.8px 51.2px 180.0px;display:grid;grid-template-columns:1fr 1.25fr;gap:51.2px;align-items:center;z-index:2}
+.adl small{display:inline-block;font-weight:800;font-size:clamp(11px,12.8px,18px);color:var(--night);background:var(--ice);padding:5.04px 15.36px;border-radius:99px;margin-bottom:17.28px}
+.adl h2{font-family:var(--disp);font-weight:700;font-size:clamp(50px,140.8px,210px);line-height:.9;letter-spacing:-.06em;background:linear-gradient(100deg,#fff 10%,var(--ice) 55%,#9b8cff);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:17.28px}
+.adl p{font-size:clamp(14px,20.48px,30px);line-height:1.45;color:#cdd7e6;font-weight:500;max-width:20em}
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:15.36px}
+.pk{background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:22px;padding:14.4px 14.08px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);opacity:0;transform:translateY(24px) scale(.96)}
+.slide.on .pk{animation:pop .7s cubic-bezier(.2,.9,.3,1.2) forwards;animation-delay:calc(var(--i)*.09s + .3s)}
+@keyframes pop{to{opacity:1;transform:none}}
+.pk svg{width:55%;display:block;margin-bottom:11.52px}
+.pk b{display:block;font-family:var(--disp);font-weight:500;font-size:clamp(10px,13.44px,19px);margin-bottom:4.32px}
+.pk span{color:var(--mist);font-weight:600;font-size:clamp(10px,11.52px,16px)}
+@media (prefers-reduced-motion:reduce){.slide.on .img{animation:none}.dot,.ticker span,.adslide::before,.adslide::after,.slide.on .pk,.nav button.on span::after{animation:none}.nav button.on span::after{width:100%}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+ <div class="top"><div class="pill brand">MEMO ŞEHRİ</div><div class="pill"><span class="dot"></span>Yenileme devam ediyor<span class="clock" id="clock"></span></div></div>
+ <div class="shade"></div>
+ <div class="cap" id="cap"><div class="tag" id="tag"></div><h1 id="title"></h1><p id="desc"></p></div>
+ <div class="big" id="big"></div>
+ <aside class="next" id="next"><div class="thumb" id="nthumb"></div><div><small>Sıradaki</small><b id="ntitle"></b></div></aside>
+ <div class="ticker"><em>Son gelişmeler</em><div><span id="news"></span></div></div>
+ <nav class="nav" id="nav" aria-label="Slayt seçimi"></nav>
+</main>
+<script>
+/* ============ BURAYI DÜZENLE ============ */
+const AUTOPLAY_SECONDS = 7;
+// Kendi resmini koymak istersen src'ye yaz (örn. "img/yollar.png"). Dosya yoksa otomatik çizilen şehir resmi görünür.
+const SLIDES = [
+ {k:"road",  src:"img/yollar.png",  cat:"Yollar",  title:"Yeni ana cadde",       desc:"Eski yollar söküldü. Geniş asfalt, kaldırım ve sokak lambalarıyla baştan inşa ediliyor."},
+ {k:"build", src:"img/binalar.png", cat:"Binalar", title:"Yükselen şehir merkezi",desc:"Belediye, market ve ev blokları modern tasarımla yeniden yapılıyor."},
+ {k:"plaza", src:"img/meydan.png",  cat:"Meydan",  title:"Şehir meydanı",        desc:"Fıskiyeli havuz ve geniş yürüyüş alanıyla yeni buluşma noktası."},
+ {k:"night", src:"img/gece.png",    cat:"Gece",    title:"Gece manzarası",       desc:"Işıkları yanan yeni şehir silueti."},
+ {k:"ad",    cat:"MEMO",    title:"MEMO paketleri",       desc:""}
+];
+// Alttaki kayan haber şeridi
+const NEWS = ["MEMO paketleri yayında","Ana cadde asfaltı döküldü","Şehir merkezinde yeni binalar yükseliyor","Meydandaki havuz tamamlandı","Sokak lambaları yenilendi","Yeni yollar yakında açılıyor"];
+/* ========================================= */
+
+/* --- şehir resmi üretici (SVG) --- */
+function rng(s){return()=>(s=s*16807%2147483647)/2147483647}
+function blocks(r,base,hmin,hmax,cols,lit,warm,skip){
+ let o='',x=-20;
+ while(x<1620){
+  const w=80+Math.floor(r()*5)*20,h=hmin+Math.floor(r()*((hmax-hmin)/20))*20,y=base-h;
+  if(skip&&x+w>skip[0]&&x<skip[1]){x+=w;continue}
+  o+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${cols[Math.floor(r()*cols.length)]}"/>`;
+  o+=`<rect x="${x}" y="${y}" width="${w}" height="8" fill="rgba(255,255,255,.18)"/>`;
+  if(lit!==null)for(let yy=y+24;yy<base-16;yy+=28)for(let xx=x+14;xx<x+w-18;xx+=24)
+   o+=`<rect x="${xx}" y="${yy}" width="10" height="15" fill="${r()<lit?warm:'rgba(0,0,0,.3)'}"/>`;
+  x+=w+(r()<.3?20:0);
+ }return o}
+function scene(k){
+ const r=rng(k.length*977+13),night=k==='night';
+ const sky={road:['#4aa3e8','#d9efff'],build:['#2e6fb5','#bcdcf5'],plaza:['#e8825a','#ffe1a8'],night:['#050918','#1b2a55']}[k];
+ const warm=night?'#ffd978':'#fff3c2';
+ let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"><defs>
+ <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient>
+ <radialGradient id="l"><stop offset="0" stop-color="#ffd978" stop-opacity=".9"/><stop offset="1" stop-color="#ffd978" stop-opacity="0"/></radialGradient></defs>
+ <rect width="1600" height="900" fill="url(#g)"/>`;
+ if(night)for(let i=0;i<70;i++)s+=`<rect x="${r()*1600}" y="${r()*380}" width="3" height="3" fill="#fff" opacity="${.3+r()*.7}"/>`;
+ s+=`<rect x="1230" y="130" width="90" height="90" fill="${night?'#f1f3ff':k==='plaza'?'#fff2c4':'#fffbe0'}"/>`;
+ s+=blocks(r,640,120,300,night?['#101a38','#0d1530']:['#7f9bc0','#8aa5c8'],null,0,0);
+ const near=k==='build'?[240,460]:[200,340];
+ s+=blocks(r,665,near[0],near[1]+(k==='build'?60:0),night?['#16224a','#1c2b5c','#121c3e']:['#d8c7a4','#b9a98a','#e6dcc6','#9fb2cf'],night?.45:.18,warm,k==='plaza'?[560,1040]:null);
+ if(k==='build'){ // vinç
+  s+=`<rect x="1180" y="90" width="14" height="580" fill="#ffb347"/><rect x="880" y="90" width="520" height="12" fill="#ffb347"/><rect x="1384" y="102" width="4" height="150" fill="#333"/><rect x="1368" y="252" width="36" height="30" fill="#ffb347"/><rect x="900" y="102" width="30" height="40" fill="#555"/>`;
+  for(let y=100;y<660;y+=40)s+=`<path d="M1180 ${y}l14 20l-14 20" stroke="#c77a10" stroke-width="3" fill="none"/>`;
+ }
+ s+=`<rect y="665" width="1600" height="235" fill="${night?'#1a2038':'#bfc6d4'}"/><rect y="665" width="1600" height="18" fill="${night?'#2a3254':'#e3e8f0'}"/>`;
+ if(k==='plaza'){
+  for(let x=0;x<1600;x+=80)s+=`<rect x="${x}" y="683" width="2" height="217" fill="rgba(0,0,0,.08)"/>`;
+  s+=`<rect x="560" y="700" width="480" height="40" fill="#cfd6e4"/><rect x="590" y="670" width="420" height="40" fill="#5fb7e8"/><rect x="780" y="520" width="40" height="150" fill="#e8eef7"/>`;
+  [[720,420],[760,380],[840,380],[880,420]].forEach(p=>s+=`<path d="M800 520Q${p[0]} ${p[1]} ${p[0]} 640" stroke="#bfeaff" stroke-width="7" fill="none" opacity=".85"/>`);
+ }else{
+  s+=`<rect y="730" width="1600" height="130" fill="${night?'#0f1426':'#2c3447'}"/>`;
+  for(let x=20;x<1600;x+=140)s+=`<rect x="${x}" y="792" width="80" height="9" fill="#ffd54a"/>`;
+  if(k==='road'){for(let x=300;x<1500;x+=380){s+=`<polygon points="${x},730 ${x+26},730 ${x+13},690" fill="#ff7a1a"/><rect x="${x+3}" y="712" width="20" height="6" fill="#fff"/>`}
+   s+=`<rect x="520" y="700" width="220" height="30" fill="#fff"/>`;for(let x=520;x<740;x+=44)s+=`<rect x="${x}" y="700" width="22" height="30" fill="#ff7a1a"/>`;}
+ }
+ for(let x=150;x<1600;x+=330){
+  s+=`<rect x="${x}" y="480" width="8" height="200" fill="${night?'#7c86b5':'#4b5368'}"/><rect x="${x-26}" y="474" width="40" height="8" fill="${night?'#7c86b5':'#4b5368'}"/><rect x="${x-26}" y="482" width="26" height="6" fill="${night?'#ffe08a':'#fff'}"/>`;
+  if(night)s+=`<circle cx="${x-12}" cy="500" r="130" fill="url(#l)"/>`;
+ }
+ return s+'</svg>'}
+const G=(id,a,b)=>`<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient>`;
+const ICONS={
+ dark:`<svg viewBox="0 0 64 64"><defs>${G('a','#6a5cff','#1b1f3a')}</defs><rect x="6" y="8" width="52" height="48" rx="10" fill="url(#a)"/><rect x="14" y="18" width="36" height="6" rx="3" fill="#fff" opacity=".85"/><rect x="14" y="30" width="22" height="6" rx="3" fill="#fff" opacity=".4"/><rect x="14" y="42" width="30" height="6" rx="3" fill="#fff" opacity=".4"/></svg>`,
+ full:`<svg viewBox="0 0 64 64"><defs>${G('b','#ffe27a','#ff9a3c')}</defs><circle cx="32" cy="32" r="13" fill="url(#b)"/>${[0,45,90,135,180,225,270,315].map(a=>`<rect x="30" y="4" width="4" height="10" rx="2" fill="#ffd25a" transform="rotate(${a} 32 32)"/>`).join('')}</svg>`,
+ shield:`<svg viewBox="0 0 64 64"><defs>${G('c','#6ee7ff','#2f6bff')}</defs><path d="M32 5l22 8v16c0 15-10 25-22 30C20 54 10 44 10 29V13z" fill="url(#c)"/><path d="M32 14l13 5v10c0 9-6 15-13 19z" fill="#fff" opacity=".28"/></svg>`,
+ potato:`<svg viewBox="0 0 64 64"><defs>${G('d','#e0b66a','#a9743a')}</defs>${[[8,8],[24,8],[40,8],[8,24],[24,24],[40,24],[8,40],[24,40],[40,40]].map((p,i)=>`<rect x="${p[0]}" y="${p[1]}" width="16" height="16" fill="${i%2?'#c79552':'url(#d)'}"/>`).join('')}</svg>`,
+ smooth:`<svg viewBox="0 0 64 64"><defs>${G('e','#7cf3c4','#00b7ff')}</defs><path d="M4 40c10-26 20 26 30 0s20 16 26-8" stroke="url(#e)" stroke-width="7" stroke-linecap="round" fill="none"/></svg>`,
+ sky:`<svg viewBox="0 0 64 64"><defs>${G('f','#ff9a76','#6a5cff')}</defs><rect x="4" y="8" width="56" height="48" rx="12" fill="url(#f)"/><circle cx="44" cy="22" r="7" fill="#fff3c4"/><path d="M12 46a8 8 0 0 1 8-8h2a10 10 0 0 1 19 2h2a6 6 0 0 1 0 12H20a8 8 0 0 1-8-6z" fill="#fff" opacity=".92"/></svg>`};
+const PACKS=[["dark","MEMO DARK GUI","Koyu modern arayüz"],["full","MEMO FULLBRIGHT","Her yer aydınlık"],["shield","MEMO LOW SHIELD","Alçak kalkan"],["potato","MEMO POTATO","Maksimum FPS"],["smooth","MEMO SMOOTH","Akıcı grafik"],["sky","MEMO REALISTIC SKY","Gerçekçi gökyüzü"]];
+const adHTML=()=>`<div class="grid"></div><div class="adwrap"><div class="adl"><small>Minecraft kaynak paketleri</small><h2>MEMO</h2><p>Daha hızlı, daha güzel, daha modern bir Minecraft.</p></div><div class="packs">${PACKS.map((p,i)=>`<div class="pk" style="--i:${i}">${ICONS[p[0]]}<b>${p[1]}</b><span>${p[2]}</span></div>`).join('')}</div></div>`;
+const art=k=>'url("data:image/svg+xml;utf8,'+encodeURIComponent(scene(k==='ad'?'night':k))+'")';
+
+/* --- arayüz --- */
+const $=id=>document.getElementById(id),stage=$('stage'),nav=$('nav'),cap=$('cap');
+let cur=-1,timer;
+SLIDES.forEach((s,i)=>{
+ const el=document.createElement('div');el.className='slide';
+ if(s.k==='ad'){el.classList.add('adslide');el.innerHTML=adHTML()}else{
+ el.innerHTML='<div class="img"></div>';
+ const box=el.firstChild;box.style.backgroundImage=art(s.k);
+ const im=new Image();im.onload=()=>box.style.backgroundImage='url("'+s.src+'")';im.src=s.src;}
+ stage.insertBefore(el,stage.querySelector('.shade'));s.el=el;
+ const b=document.createElement('button');b.innerHTML=s.cat+'<span></span>';b.onclick=()=>go(i);nav.appendChild(b);s.btn=b;
+});
+$('news').innerHTML=NEWS.map(n=>n+'<b>◆</b>').join('').repeat(2);
+$('next').onclick=()=>go(cur+1);
+const tick=()=>{$('clock').textContent=' · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'})};tick();setInterval(tick,30000);
+function go(i){
+ i=(i+SLIDES.length)%SLIDES.length;if(i===cur)return;
+ SLIDES.forEach((x,k)=>{x.el.classList.toggle('on',k===i);x.btn.classList.remove('on');x.btn.classList.toggle('done',k<i)});
+ const s=SLIDES[i];void s.btn.offsetWidth;s.btn.style.setProperty('--dur',AUTOPLAY_SECONDS+'s');s.btn.classList.add('on');
+ document.body.classList.toggle('ad',s.k==='ad');
+ cap.classList.add('swap');
+ setTimeout(()=>{$('tag').textContent=s.cat;$('title').textContent=s.title;$('desc').textContent=s.desc;cap.classList.remove('swap')},350);
+ const n=SLIDES[(i+1)%SLIDES.length];$('nthumb').style.backgroundImage=art(n.k);$('ntitle').textContent=n.title;
+ $('big').textContent='0'+(i+1);
+ cur=i;clearTimeout(timer);timer=setTimeout(()=>go(cur+1),AUTOPLAY_SECONDS*1000);
+}
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(cur+1);if(e.key==='ArrowLeft')go(cur-1)});
+stage.addEventListener('click',e=>{if(!e.target.closest('.nav'))go(cur+1)});
+const fit=()=>stage.style.setProperty('--s',Math.min(innerWidth/1280,innerHeight/720));
+addEventListener('resize',fit);fit();
+go(0);
+</script>
+</body>
+</html>
